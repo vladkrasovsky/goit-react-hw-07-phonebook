@@ -27,10 +27,12 @@ const App = () => {
         <ContactForm />
       </Section>
 
+      {showMessage && <Notification message="Request in progress..." />}
+
       {contacts.length > 0 && (
         <Section title="Contacts">
           <Filter />
-          {showMessage && <Notification message="Request in progress..." />}
+
           <ContactList />
         </Section>
       )}
