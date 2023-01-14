@@ -1,21 +1,13 @@
 import { useSelector } from 'react-redux';
-import { selectContacts, selectNameFilter } from 'redux/selectors';
+import { selectNameFilter, selectVisibleContacts } from 'redux/selectors';
 import Contact from 'components/Contact';
 import { List } from './ContactList.styled';
 import Notification from 'components/Notification';
 
-const getVisibleContacts = (contacts, nameFilter) => {
-  const normalizedFilter = nameFilter.toLowerCase();
-  return contacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter)
-  );
-};
-
 const ContactList = () => {
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectVisibleContacts);
   const nameFilter = useSelector(selectNameFilter);
-  const visibleContacts = getVisibleContacts(contacts, nameFilter);
-  const showMessage = visibleContacts.length === 0 && nameFilter;
+  const showMessage = contacts.length === 0 && nameFilter;
 
   return (
     <>
@@ -23,9 +15,9 @@ const ContactList = () => {
         <Notification message="Nothing was found on your query..." />
       )}
 
-      {visibleContacts.length > 0 && (
+      {contacts.length > 0 && (
         <List>
-          {visibleContacts.map(contact => (
+          {contacts.map(contact => (
             <li key={contact.id}>
               <Contact {...contact} />
             </li>
