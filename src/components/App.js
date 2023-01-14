@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
-import { getIsLoading, getError, getContacts } from 'redux/selectors';
+import { selectIsLoading, selectError, selectContacts } from 'redux/selectors';
 import { Layout } from './Layout';
 import { GlobalStyle } from './GlobalStyle';
 import Section from './Section';
@@ -12,9 +12,9 @@ import Notification from './Notification';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   const showMessage = isLoading && !error;
 
   useEffect(() => {

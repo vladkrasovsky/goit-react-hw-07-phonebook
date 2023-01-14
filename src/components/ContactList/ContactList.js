@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { getContacts, getNameFilter } from 'redux/selectors';
+import { selectContacts, selectNameFilter } from 'redux/selectors';
 import Contact from 'components/Contact';
 import { List } from './ContactList.styled';
 import Notification from 'components/Notification';
@@ -12,8 +12,8 @@ const getVisibleContacts = (contacts, nameFilter) => {
 };
 
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const nameFilter = useSelector(getNameFilter);
+  const contacts = useSelector(selectContacts);
+  const nameFilter = useSelector(selectNameFilter);
   const visibleContacts = getVisibleContacts(contacts, nameFilter);
   const showMessage = visibleContacts.length === 0 && nameFilter;
 
