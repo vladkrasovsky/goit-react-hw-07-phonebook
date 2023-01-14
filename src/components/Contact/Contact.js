@@ -1,29 +1,32 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContact } from 'redux/operations';
 import { Button } from './Contact.styled';
+import { useState } from 'react';
 
-const Contact = ({ contact: { id, name, number } }) => {
+const Contact = ({ id, name, number }) => {
   const dispatch = useDispatch();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDelete = () => dispatch(deleteContact(id));
+  const handleDelete = () => {
+    setIsDeleting(true);
+    dispatch(deleteContact(id));
+  };
 
   return (
     <>
       {name}: {number}
-      <Button type="button" onClick={handleDelete}>
-        Delete
+      <Button type="button" onClick={handleDelete} disabled={isDeleting}>
+        {isDeleting ? 'Deleting...' : 'Delete'}
       </Button>
     </>
   );
 };
 
 Contact.propTypes = {
-  contact: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-  }).isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
 };
 
 export default Contact;

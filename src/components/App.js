@@ -1,23 +1,43 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchContacts } from 'redux/operations';
+import { getIsLoading, getError, getContacts } from 'redux/selectors';
 import { Layout } from './Layout';
 import { GlobalStyle } from './GlobalStyle';
 import Section from './Section';
 import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
+import Notification from './Notification';
 
-const App = () => (
-  <Layout>
-    <Section title="Phonebook">
-      <ContactForm />
-    </Section>
+const App = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
+  const showMessage = isLoading && !error;
 
-    <Section title="Contacts">
-      <Filter />
-      <ContactList />
-    </Section>
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-    <GlobalStyle />
-  </Layout>
-);
+  return (
+    <Layout>
+      <Section title="Phonebook">
+        <ContactForm />
+      </Section>
+
+      {contacts.length > 0 && (
+        <Section title="Contacts">
+          <Filter />
+          {showMessage && <Notification message="Request in progress..." />}
+          <ContactList />
+        </Section>
+      )}
+
+      <GlobalStyle />
+    </Layout>
+  );
+};
 
 export default App;
